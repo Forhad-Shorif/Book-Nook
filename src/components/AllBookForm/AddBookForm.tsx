@@ -26,7 +26,7 @@ const AddBookForm = () => {
 
         try {
             // ২. তোমার ব্যাকএন্ড API-তে POST রিকুয়েস্ট পাঠানো
-            const res = await fetch("http://localhost:8000/NewBook", {
+            const res = await fetch(`${process.env.PUBLIC_SECRET_URL}/NewBook`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

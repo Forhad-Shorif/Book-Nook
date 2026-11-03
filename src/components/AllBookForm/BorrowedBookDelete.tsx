@@ -1,4 +1,5 @@
 'use client'
+
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -30,7 +31,7 @@ const BorrowedBookDelete = ({ book }: { book: BorrowedBook }) => {
 
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/BorrowedBooks/${book._id}`, {
+            const response = await fetch(`${process.env.PUBLIC_SECRET_URL}/BorrowedBooksReturn/${book._id}`, {
                 method: 'DELETE',
             });
             if(!response.ok) {

@@ -101,7 +101,7 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
 
             // 3. Save borrowing information
             const borrowResponse = await fetch(
-                "http://localhost:8000/BorrowedBooks",
+                `${process.env.PUBLIC_SECRET_URL}/BorrowedBooks`,
                 {
                     method: "POST",
                     headers: {
@@ -120,7 +120,7 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
             }
             // Update available book copies
             const updateResponse = await fetch(
-                `http://localhost:8000/BookCopesReduce/${BorrowBook._id}`,
+                `${process.env.PUBLIC_SECRET_URL}/BookCopesReduce/${BorrowBook._id}`,
                 {
                     method: "PATCH",
                 }

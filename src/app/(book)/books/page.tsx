@@ -7,7 +7,7 @@ import AllBooksCards from '@/components/Books/AllBooksCards';
 
 const FetchData = async (): Promise<Book[]> => {
   try {
-    const response = await fetch(`http://localhost:8000/books`);
+    const response = await fetch(`${process.env.PUBLIC_SECRET_URL}/books`);
 
     if (!response.ok) {
       return [];

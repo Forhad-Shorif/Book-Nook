@@ -15,9 +15,8 @@ const session = await auth.api.getSession({
 })
 const user = session?.user
 const email = user?.email
-console.log(email)
 
-    const res = await fetch(`http://localhost:8000/MyBooks/${email}`);
+    const res = await fetch(`${process.env.PUBLIC_SECRET_URL}/MyBooks/${email}`);
 
     if (!res.ok) {
        return <p>somossa hoyeche</p>

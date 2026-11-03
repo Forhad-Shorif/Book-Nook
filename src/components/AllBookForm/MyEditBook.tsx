@@ -51,7 +51,7 @@ const EditBookForm = ({ book }: { book: Book }) => {
         const bookId = getBookId(book?._id as string | { $oid: string });
 
         try {
-            const response = await fetch(`http://localhost:8000/UpdateBook/${bookId}`, {
+            const response = await fetch(`${process.env.PUBLIC_SECRET_URL}/UpdateBook/${bookId}`, {
                 method: "PATCH", 
                 headers: {
                     "Content-Type": "application/json",

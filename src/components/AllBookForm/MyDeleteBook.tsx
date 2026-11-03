@@ -12,24 +12,26 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Book } from "@/Type/type"
+import { showToast } from "@/utils/Toast";
 
 const DeleteBookForm = ({ book }: { book: Book }) => {
 
     const handleDelete = async () => {
         const bookId = book._id;
         try {
-            const response = await fetch(`http://localhost:8000/DeleteBook/${bookId}`, {
+            const response = await fetch(`${process.env.PUBLIC_SECRET_URL}/DeleteBook/${bookId}`, {
                 method: "DELETE",
             });
 
             if (response.ok) {
-                console.log("Book deleted successfully!");
+                showToast.success("Book deleted successfully!");
             } else {
-                console.log("Failed to delete the book. Please try again.");
+                showToast.error("Failed to delete the book. Please try again.");
             }
         } catch (error) {
-            console.error("Error deleting the book:", error);
+            showToast.error("Error deleting the book:");
         }
+        
     };
 
     return (

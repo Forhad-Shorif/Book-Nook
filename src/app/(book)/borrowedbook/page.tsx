@@ -10,7 +10,7 @@ const BorrowedBook = async () => {
     const user = session?.user
     const email = user?.email
 
-    const fetchData = await fetch(`http://localhost:8000/BorrowedBooks/${email}`);
+    const fetchData = await fetch(`${process.env.PUBLIC_SECRET_URL}/BorrowedBooksGet/${email}`);
      const data = await fetchData.json();
      console.log(data)
 
