@@ -118,6 +118,7 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
              if(borrowResponse.ok) {
                 showToast.success('Borrowing information saved successfully!');
             }
+
             // Update available book copies
             const updateResponse = await fetch(
                 `${process.env.PUBLIC_SECRET_URL}/BookCopesReduce/${BorrowBook._id}`,
@@ -144,14 +145,7 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
             showToast.success("Book borrowed successfully!");
 
         } catch (error) {
-            console.error("Borrow error:", error);
-
-            showToast.error(
-                error instanceof Error
-                    ? error.message
-                    : "Something went wrong. Please try again."
-            );
-
+           showToast.error("Something went wrong")
         } finally {
             setLoading(false);
         }

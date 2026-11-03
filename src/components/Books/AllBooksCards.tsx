@@ -9,7 +9,6 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 
 const AllBooksCards = ({ books }: { books: Book[] }) => {
-  
 
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All");
@@ -23,7 +22,7 @@ const AllBooksCards = ({ books }: { books: Book[] }) => {
         const matchesCategory = selectedCategory === "All" || book.category === selectedCategory;
         return matchesSearch && matchesCategory;
     });
-    
+
 
     return (
         <div>
@@ -51,8 +50,8 @@ const AllBooksCards = ({ books }: { books: Book[] }) => {
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
                             className={`rounded-full px-4 py-2 text-xs font-medium transition-all shrink-0 ${selectedCategory === cat
-                                    ? "bg-amber-400 text-slate-950 shadow-lg shadow-amber-400/20 font-semibold"
-                                    : "bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10 hover:text-white"
+                                ? "bg-amber-400 text-slate-950 shadow-lg shadow-amber-400/20 font-semibold"
+                                : "bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10 hover:text-white"
                                 }`}
                         >
                             {cat}

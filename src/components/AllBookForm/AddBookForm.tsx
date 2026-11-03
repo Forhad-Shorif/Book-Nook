@@ -36,13 +36,15 @@ const AddBookForm = () => {
                     createdAt: new Date().toISOString(), // সর্টিংয়ের জন্য তারিখ
                 }),
             });
-
+               
+            if(!res.ok) {
+                showToast.error("Failed to add the book. Please try again.");
+                return;
+            }
             if (res.ok) {
                showToast.success("Book added successfully!");
                 (e.target as HTMLFormElement).reset(); // ফর্ম ক্লিয়ার করা
                 router.refresh(); // পেজ রিফ্রেশ করে লেটেস্ট ডেটা দেখাবে
-            } else {
-                showToast.error("Failed to add book. Please try again.");
             }
         } catch (error) {
             showToast.error("Could not connect to backend server!");

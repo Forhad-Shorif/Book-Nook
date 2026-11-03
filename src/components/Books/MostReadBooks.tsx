@@ -6,7 +6,7 @@ import React from 'react';
 // ব্যাকএন্ড থেকে লেটেস্ট ১০টি বই ফেচ করার ফাংশন
 const fetchLatestBooks = async (): Promise<Book[]> => {
   try {
-    const response = await fetch(`${process.env.PUBLIC_SECRET_URL}/LatestBooks`); // 60 সেকেন্ডের জন্য ক্যাশ করা হবে
+    const response = await fetch(`${process.env.PUBLIC_SECRET_URL}/LatestBooks`,{next: { revalidate: 10 }}); // 60 সেকেন্ডের জন্য ক্যাশ করা হবে
 
     if (!response.ok) {
       return [];

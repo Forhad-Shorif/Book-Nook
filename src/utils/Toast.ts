@@ -15,27 +15,18 @@ const cleanStyle = {
 };
 
 export const showToast = {
-    success: (msg: string) => {
-        // উইন্ডো বা ব্রাউজার এনভায়রনমেন্ট চেক করার জন্য
-        if (typeof window !== 'undefined' && toast?.success) {
-            toast.success(msg, { 
-                position: "top-center", 
-                autoClose: 1500,
-                hideProgressBar: true, 
-                closeButton: false, 
-                style: { ...cleanStyle, color: '#16a34a' } 
-            });
-        }
-    },
-    error: (msg: string) => {
-        if (typeof window !== 'undefined' && toast?.error) {
-            toast.error(msg, { 
-                position: "top-center", 
-                autoClose: 2000,
-                hideProgressBar: true, 
-                closeButton: false, 
-                style: { ...cleanStyle, color: '#dc2626' } 
-            });
-        }
-    }
+    success: (msg: string) => toast.success(msg, { 
+        position: "top-center", 
+        autoClose: 1500,
+        hideProgressBar: true, 
+        closeButton: false, 
+        style: { ...cleanStyle, color: '#16a34a' } 
+    }),
+    error: (msg: string) => toast.error(msg, { 
+        position: "top-center", 
+        autoClose: 2000,
+        hideProgressBar: true, 
+        closeButton: false, 
+        style: { ...cleanStyle, color: '#dc2626' } 
+    })
 };

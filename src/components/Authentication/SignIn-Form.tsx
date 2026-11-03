@@ -26,15 +26,14 @@ const SignInForm = () => {
             email: string;
             password: string;
         };
-
+          console.log('Credentials:', credentials);
         setLoading(true);
 
         try {
             // Better Auth সাইন-ইন কল (তোমার ব্যাকএন্ড লজিক অনুযায়ী ব্যবহার করতে পারো)
             
             const { data, error } = await authClient.signIn.email({
-                email: credentials.email,
-                password: credentials.password,
+              ...credentials
             });
 
             if (error) {

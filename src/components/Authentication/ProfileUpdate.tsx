@@ -35,12 +35,11 @@ const ProfileUpdate = () => {
             image: string;
             name: string;
         };
-        if (!updatedUser.name || !updatedUser.image) {
-            showToast.error('Please fill in all the fields before submitting.');
-            return;
-        }
+       const { name, image } = updatedUser;
+       const updatedUserData = { name, image }; // শুধুমাত্র name এবং image প্রপার্টি পাঠানো হচ্ছে
+        console.log('Updated User Data:', updatedUserData); // লগ আউট করে দেখাবে কোন ডেটা পাঠানো হচ্ছে
         const { data, error } = await authClient.updateUser({
-            ...updatedUser,
+           ...updatedUserData
         });
        
         if (error) {

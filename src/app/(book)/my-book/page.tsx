@@ -19,7 +19,14 @@ const email = user?.email
     const res = await fetch(`${process.env.PUBLIC_SECRET_URL}/MyBooks/${email}`);
 
     if (!res.ok) {
-       return <p>somossa hoyeche</p>
+        return (
+            <div className="flex min-h-[70vh] items-center justify-center bg-[#07101c] text-white">
+                <div className="flex flex-col items-center gap-3">
+                    <div className="size-8 rounded-full border-2 border-amber-400 border-t-transparent animate-spin" />
+                    <p className="text-sm font-medium tracking-wide text-slate-400">Loading your bookshelf...</p>
+                </div>
+            </div>
+        );
     }
 
     const books: Book[] = await res.json();

@@ -31,7 +31,9 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             confirmPassword: string;
         };
          
-
+        const { name, email, image, password } = User;
+        const updatedUser = { name, email, image, password }; // confirmPassword বাদ দিয়ে নতুন অবজেক্ট তৈরি করা হলো
+         console.log('User Data:', updatedUser);
         // পাসওয়ার্ড মিল আছে কিনা চেক করা
         if (User.password !== User.confirmPassword) {
             showToast.error('Passwords do not match. Please try again.');
@@ -43,10 +45,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         try {
             // Better Auth ক্লায়েন্ট কল (confirmPassword বাদ দিয়ে বাকিগুলো পাঠানো হলো)
             const { data, error } = await authClient.signUp.email({
-              email: User.email,
-              password: User.password,
-              name: User.name,
-              image: User.image, // যদি কাস্টম প্রপার্টি হিসেবে ডেটাবেজে রাখতে চাও
+              ...updatedUser
             });
 
             if (error) {

@@ -5,6 +5,7 @@ import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
 import SignUpForm from '@/components/Authentication/SignUp-Form'; // তোমার ফোল্ডার স্ট্রাকচার অনুযায়ী পাথটি ঠিক করে নিও
 
 const SignUpPage = () => {
+    
     return (
         <main className="min-h-screen bg-[#07101c] text-slate-100 flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
             

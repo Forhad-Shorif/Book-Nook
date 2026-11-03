@@ -10,9 +10,8 @@ const BorrowedBook = async () => {
     const user = session?.user
     const email = user?.email
 
-    const fetchData = await fetch(`${process.env.PUBLIC_SECRET_URL}/BorrowedBooksGet/${email}`);
+    const fetchData = await fetch(`${process.env.PUBLIC_SECRET_URL}/BorrowedBooksGet/${email}`,{next: { revalidate: 10 }});
      const data = await fetchData.json();
-     console.log(data)
 
      if(!data || data.length === 0){
         return (

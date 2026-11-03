@@ -11,6 +11,18 @@ export interface BorrowedBook {
     returnDate?: string;
 }
 const BorrowedBookCards = ({ book }: { book: BorrowedBook[] }) => {
+    
+    if (!book || book.length === 0) {
+        return (
+            <div className="flex min-h-[70vh] items-center justify-center bg-[#07101c] text-white">
+                <div className="flex flex-col items-center gap-3">
+                    <div className="size-8 rounded-full border-2 border-amber-400 border-t-transparent animate-spin" />
+                    <p className="text-sm font-medium tracking-wide text-slate-400">You haven{"'"}t borrowed any books yet.</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
             {/* Header */}

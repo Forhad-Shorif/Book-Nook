@@ -1,13 +1,14 @@
-import BookCard from '@/components/Books/BookCard';
 import { Book } from '@/Type/type';
 import React from 'react';
 import { HugeiconsIcon } from "@hugeicons/react";
 import { BookOpen01Icon } from "@hugeicons/core-free-icons";
 import AllBooksCards from '@/components/Books/AllBooksCards';
 
-const FetchData = async (): Promise<Book[]> => {
+const FetchData: () => Promise<Book[]> = async ()=> {
   try {
-    const response = await fetch(`${process.env.PUBLIC_SECRET_URL}/books`);
+    const response = await fetch(`${process.env.PUBLIC_SECRET_URL}/books`, {
+      next: { revalidate: 10 } // রিয়েল-টাইম ডেটা ফেচ করার জন্য
+    });
 
     if (!response.ok) {
       return [];
@@ -27,15 +28,22 @@ const FetchData = async (): Promise<Book[]> => {
 
     return Array.isArray(data) ? data : [];
   } catch (error) {
-    console.error("Failed to fetch books:", error);
     return [];
   }
 };
 
 const AllBookPage = async () => {
-  const Books: Book[] = await FetchData();
-
-  
+  const books: Book[] = await FetchData() as Book[]; // Type assertion to Book[]
+  if (!books || books.length === 0) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#07101c] text-white">
+        <div className="flex flex-col items-center gap-3">
+          <div className="size-8 rounded-full border-2 border-amber-400 border-t-transparent animate-spin" />
+          <p className="text-sm font-medium tracking-wide text-slate-400">Loading books...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main>
@@ -52,7 +60,7 @@ const AllBookPage = async () => {
           Discover thousands of hand-picked stories, financial guides, and historical masterpieces. Find your next favorite read today.
         </p>
       </div>
-      <AllBooksCards books={Books} />
+      <AllBooksCards books={books} />
     </main>
   );
 };

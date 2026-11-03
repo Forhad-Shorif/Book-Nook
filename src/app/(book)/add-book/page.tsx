@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
 
 const AddBook = () => {
+    
     return (
         <main className="min-h-screen bg-[#07101c] text-slate-100 px-4 py-12 relative overflow-hidden">
             

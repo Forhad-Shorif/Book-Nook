@@ -1,7 +1,5 @@
-// export default BookDetailsPage;
 import BookDetailsCards from '@/components/Books/BookDetailsCards';
 import { Book } from '@/Type/type';
-import React from 'react';
 
 interface BookDetailsPageProps {
     params: Promise<{ id: string }>;

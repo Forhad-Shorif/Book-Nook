@@ -1,7 +1,6 @@
 import ProfileUpdate from "@/components/Authentication/ProfileUpdate";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import Image from "next/image";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Mail01Icon, ShieldCheckIcon, UserCircle02Icon } from "@hugeicons/core-free-icons";
 
@@ -11,6 +10,16 @@ const ProfilePage = async () => {
     });
 
     const user = session?.user;
+    if(!user) {
+        return (
+            <div className="flex min-h-[70vh] items-center justify-center bg-[#07101c] text-white">
+                <div className="flex flex-col items-center gap-3">
+                    <div className="size-8 rounded-full border-2 border-amber-400 border-t-transparent animate-spin" />
+                    <p className="text-sm font-medium tracking-wide text-slate-400">Loading your profile...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#07101c] text-slate-100 px-4 py-12 sm:px-6 lg:px-8">

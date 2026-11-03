@@ -67,7 +67,6 @@ const EditBookForm = ({ book }: { book: Book }) => {
             setOpen(false); // ডায়ালগ বন্ধ করবে
             router.refresh(); // পেজ রিফ্রেশ করে লেটেস্ট ডেটা দেখাবে
         } catch (error) {
-            console.error("Update error:", error);
             showToast.error("Failed to update the book. Please try again.");
         } finally {
             setLoading(false);
