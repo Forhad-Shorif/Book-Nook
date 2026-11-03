@@ -18,6 +18,7 @@ const SocialSignBtn = () => {
             }
             showToast.success('Sign In with Google Successful! Redirecting...');
             router.push('/');
+            router.refresh(); // Ensure the session is updated after sign-in
         } catch (err) {
             showToast.error('An unexpected error occurred during Google Sign-In. Please try again.');
         }
@@ -36,7 +37,7 @@ const SocialSignBtn = () => {
             showToast.success('Sign In with GitHub Successful! Redirecting...');
             router.push('/');
             router.refresh(); // Ensure the session is updated after sign-in
-            
+            showToast.success('Session updated successfully!');
         } catch (err) {
             showToast.error('An unexpected error occurred during GitHub Sign-In. Please try again.');
         }
