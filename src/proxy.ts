@@ -17,6 +17,6 @@ if (!user) {
  
 }
 export const config = {
-  matcher: ['/add-book', '/borrowedbook', '/my-book', '/profile', '/detailsbook',],
+  matcher: ['/add-book','/borrowedbook', '/my-book', '/profile', "/detailsbook/:path*",],
 }
 
