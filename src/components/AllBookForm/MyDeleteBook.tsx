@@ -25,9 +25,7 @@ const DeleteBookForm = ({ book }: { book: Book }) => {
 
             if (response.ok) {
                 showToast.success("Book deleted successfully!");
-            } else {
-                showToast.error("Failed to delete the book. Please try again.");
-            }
+            } 
         } catch (error) {
             showToast.error("Error deleting the book:");
         }

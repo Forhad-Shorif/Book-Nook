@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-// import { authClient } from "@/lib/auth-client"; // তোমার প্রজেক্টের পাথ অনুযায়ী অ্যাডজাস্ট করে নিও
 import SocialSignBtn from './SocialSign-Btn';
 import { HugeiconsIcon } from "@hugeicons/react";
 import { 
@@ -29,33 +28,23 @@ const SignInForm = () => {
           console.log('Credentials:', credentials);
         setLoading(true);
 
-        try {
+        
             // Better Auth সাইন-ইন কল (তোমার ব্যাকএন্ড লজিক অনুযায়ী ব্যবহার করতে পারো)
             
             const { data, error } = await authClient.signIn.email({
               ...credentials
             });
-
+             
             if (error) {
                 setLoading(false);
-                showToast.error('Sign In Failed! Please check your credentials and try again.');
+                showToast.error(`Sign In Failed: ${error.message}`);
                 return;
             }
-             
             if(data && data.user) {
                 router.push("/");
                 showToast.success('Sign In Successful!');
                 router.refresh(); // সেশন আপডেট করতে পেজ রিফ্রেশ করা
             }
-
-            setTimeout(() => {
-                setLoading(false);
-                showToast.success('Sign In Successful! Redirecting...');
-            }, 1500);
-
-        } catch (err) {
-            setLoading(false);
-        }
     };
 
     return (

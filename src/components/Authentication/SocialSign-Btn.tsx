@@ -7,40 +7,37 @@ const SocialSignBtn = () => {
     const router = useRouter();
 
     const SignInWithGoogle = async () => {
-        try {
             const { data, error } = await authClient.signIn.social({
                 provider: "google",
                 callbackURL: "/",
             });
-           if(error) {
-                showToast.error('Sign In with Google Failed! Please try again.');
+            if (error) {
+                showToast.error('Google Sign-In Failed! Please try again.');
                 return;
             }
-            showToast.success('Sign In with Google Successful! Redirecting...');
-            router.push('/');
-            router.refresh(); // Ensure the session is updated after sign-in
-        } catch (err) {
-            showToast.error('An unexpected error occurred during Google Sign-In. Please try again.');
-        }
+            if (data) {
+                showToast.success('Sign In with Google Successful! Redirecting...');
+                router.push('/');
+                router.refresh(); // Ensure the session is updated after sign-in
+            } 
     };
 
         const SignInWithGithub = async () => {
-        try {
+
             const { data, error } = await authClient.signIn.social({
                 provider: "github",
                 callbackURL: "/",
             });
-            if(error) {
-                showToast.error('Sign In with GitHub Failed! Please try again.');
+            if (error) {
+                showToast.error('GitHub Sign-In Failed! Please try again.');
                 return;
             }
-            showToast.success('Sign In with GitHub Successful! Redirecting...');
-            router.push('/');
-            router.refresh(); // Ensure the session is updated after sign-in
-            showToast.success('Session updated successfully!');
-        } catch (err) {
-            showToast.error('An unexpected error occurred during GitHub Sign-In. Please try again.');
-        }
+            if (data) {
+                showToast.success('Sign In with GitHub Successful! Redirecting...');
+                router.push('/');
+                router.refresh(); // Ensure the session is updated after sign-in
+            }
+     
     };
 
 

@@ -126,19 +126,10 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
                     method: "PATCH",
                 }
             );
-       
-            if (!updateResponse.ok) {
-                showToast.error('Failed to reduce book copies. Please contact support.');
-            }
             if(updateResponse.ok) {
                 router.refresh(); // Refresh the page to reflect changes
                 showToast.success('Book copies updated successfully!');
             }
-
-            if (!updateResponse.ok) {
-                showToast.error("Borrowing was saved, but updating book copies failed. Please contact support.");
-            }
-
             // 5. Success
             setIsOpen(false);
             form.reset();

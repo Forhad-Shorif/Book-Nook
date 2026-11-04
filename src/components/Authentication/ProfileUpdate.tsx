@@ -35,13 +35,16 @@ const ProfileUpdate = () => {
             image: string;
             name: string;
         };
+        if(!updatedUser){
+            showToast.error("Please fill in all required fields.");
+            return;
+        }
        const { name, image } = updatedUser;
        const updatedUserData = { name, image }; // শুধুমাত্র name এবং image প্রপার্টি পাঠানো হচ্ছে
         console.log('Updated User Data:', updatedUserData); // লগ আউট করে দেখাবে কোন ডেটা পাঠানো হচ্ছে
         const { data, error } = await authClient.updateUser({
            ...updatedUserData
-        });
-       
+        }); 
         if (error) {
             showToast.error('Failed to update profile. Please try again.');
             return;
@@ -55,11 +58,10 @@ const ProfileUpdate = () => {
         try {
             await authClient.signOut();
             showToast.success('sign out successful');
+            router.refresh();
         } catch (error) {
             showToast.error('Failed to sign out! Please try again.');
-        }
-        showToast.success('sign out successful');
-        router.refresh();
+        }  
     }
 
 

@@ -34,10 +34,6 @@ const BorrowedBookDelete = ({ book }: { book: BorrowedBook }) => {
             const response = await fetch(`${process.env.PUBLIC_SECRET_URL}/BorrowedBooksReturn/${book._id}`, {
                 method: 'DELETE',
             });
-            if(!response.ok) {
-                showToast.error('Failed to delete borrowed book. Please try again.');
-                return;
-            }
             if(response.ok) {
                 showToast.success('Borrowed book returned successfully!');
                 router.refresh(); // Refresh the page to reflect changes

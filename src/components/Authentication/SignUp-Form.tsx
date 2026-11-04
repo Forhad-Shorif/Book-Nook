@@ -42,28 +42,22 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
         setLoading(true);
 
-        try {
+        
             // Better Auth ক্লায়েন্ট কল (confirmPassword বাদ দিয়ে বাকিগুলো পাঠানো হলো)
             const { data, error } = await authClient.signUp.email({
               ...updatedUser
             });
-
             if (error) {
-                showToast.error(error.message || "Sign Up Failed! Please try again.");
                 setLoading(false);
+                showToast.error(`Sign Up Failed: ${error.message}`);
                 return;
             }
-
             if (data) {
                 showToast.success('Sign Up Successful! You can now sign in.');
                 router.push('/');
                 router.refresh(); 
             }
-        } catch (err) {
-            showToast.error("An unexpected error occurred. Please try again.");
-        } finally {
-            setLoading(false);
-        }
+      
    };
 
     return (
@@ -127,7 +121,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                             <input
                                 type="url"
                                 name="image"
-                                placeholder="https://i.ibb.co.com/..."
+                                placeholder="Your profile image URL "
                                 className="w-full rounded-xl border border-white/15 bg-slate-950/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30 transition-all"
                             />
                         </div>

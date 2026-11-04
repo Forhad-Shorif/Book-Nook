@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { HugeiconsIcon } from "@hugeicons/react";
-import { 
-  BookOpen01Icon, 
-  UserCircleIcon, 
-  Image01Icon, 
-  File01Icon,
-  Tag01Icon
+import {
+    BookOpen01Icon,
+    UserCircleIcon,
+    Image01Icon,
+    File01Icon,
+    Tag01Icon
 } from "@hugeicons/core-free-icons";
 import { showToast } from '@/utils/Toast';
 import { useRouter } from 'next/navigation';
@@ -18,14 +18,18 @@ const AddBookForm = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
         // ১. ফর্ম থেকে সমস্ত ডেটা একসাথে নিয়ে নেওয়া
         const formData = new FormData(e.currentTarget);
         const bookData = Object.fromEntries(formData.entries());
+        if (!bookData) {
+            showToast.error("Please fill in all required fields.");
+            return;
+        }
         setLoading(true);
 
         try {
-            // ২. তোমার ব্যাকএন্ড API-তে POST রিকুয়েস্ট পাঠানো
+            // ২. তোমার ব্যাকএন্ড API-তে POST রিকুয়েস্ট পাঠানো
             const res = await fetch(`${process.env.PUBLIC_SECRET_URL}/NewBook`, {
                 method: "POST",
                 headers: {
@@ -36,13 +40,9 @@ const AddBookForm = () => {
                     createdAt: new Date().toISOString(), // সর্টিংয়ের জন্য তারিখ
                 }),
             });
-               
-            if(!res.ok) {
-                showToast.error("Failed to add the book. Please try again.");
-                return;
-            }
+
             if (res.ok) {
-               showToast.success("Book added successfully!");
+                showToast.success("Book added successfully!");
                 (e.target as HTMLFormElement).reset(); // ফর্ম ক্লিয়ার করা
                 router.refresh(); // পেজ রিফ্রেশ করে লেটেস্ট ডেটা দেখাবে
             }
@@ -56,14 +56,14 @@ const AddBookForm = () => {
     return (
         <div className="w-full max-w-2xl mx-auto">
             <div className="overflow-hidden rounded-3xl border border-white/15 bg-slate-900/60 p-8 backdrop-blur-2xl shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
-                
+
                 <div className="mb-6 text-center">
                     <h2 className="text-2xl font-bold tracking-tight text-white font-heading">Add a New Book</h2>
                     <p className="text-xs text-slate-400 mt-1">Share a great book with the BookNook community</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    
+
                     {/* Book Title */}
                     <div>
                         <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
