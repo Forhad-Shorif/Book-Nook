@@ -20,7 +20,7 @@ const BorrowedBook = async () => {
     }
     const email = user?.email
 
-    const fetchData = await fetch(`${process.env.PUBLIC_SECRET_URL}/BorrowedBooksGet/${email}`,{next: { revalidate: 10 }});
+    const fetchData = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/BorrowedBooksGet/${email}`,{next: { revalidate: 1 }});
      const data = await fetchData.json();
 
      if(!data || data.length === 0){

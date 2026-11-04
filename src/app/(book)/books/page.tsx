@@ -6,7 +6,7 @@ import AllBooksCards from '@/components/Books/AllBooksCards';
 
 const FetchData: () => Promise<Book[]> = async ()=> {
   try {
-    const response = await fetch(`${process.env.PUBLIC_SECRET_URL}/books`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/books`, {
       next: { revalidate: 10 } // রিয়েল-টাইম ডেটা ফেচ করার জন্য
     });
 

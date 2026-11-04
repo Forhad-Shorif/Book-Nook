@@ -26,7 +26,7 @@ const user = session?.user
     }
 const email = user?.email
 
-    const res = await fetch(`${process.env.PUBLIC_SECRET_URL}/MyBooks/${email}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/MyBooks/${email}`);
 
     if (!res.ok) {
         return (

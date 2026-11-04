@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -49,20 +48,21 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
 
     const availableCopies = Number(BorrowBook.totalCopies ?? 1);
 
-    const handleBorrowSubmit = async ( e: React.FormEvent<HTMLFormElement>) => {
+    const handleBorrowSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (loading) return;
 
-        // Capture form and its data before async operations
+        // অ্যাসিনক্রোনাস অপারেশনের আগে ফর্ম ডেটা ক্যাপচার করে রাখা হলো
         const form = e.currentTarget;
         const formData = new FormData(form);
 
         const returnDate = String(formData.get("returnDate") || "");
         const borrowedAt = getLocalDate();
 
+        // ১. প্রাথমিক ভ্যালিডেশন চেক
         if (!Number.isFinite(availableCopies) || availableCopies <= 0) {
-           showToast.error("This book is currently out of stock.");
+            showToast.error("This book is currently out of stock.");
             return;
         }
 
@@ -79,65 +79,64 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
         setLoading(true);
 
         try {
-            // 1. Get authenticated user
-            const { data: session, error } = await authClient.getSession();
+            // ২. ইউজার সেশন চেক
+            const { data: session, error: sessionError } = await authClient.getSession();
             const user = session?.user;
 
-            if (error || !user?.name || !user?.email) {
-                showToast.error("Please sign in to borrow this book.");
+            if (!user || sessionError) {
+                showToast.error("You must be logged in to borrow a book.");
+                setLoading(false);
                 return;
             }
 
-            // 2. Prepare borrowing information
-            const data = {
-                Id: BorrowBook?._id,
-                Title: BorrowBook?.title,
-                Image: BorrowBook?.coverImage,
-                Name: user?.name,
-                Email: user?.email,
+            // ৩. বুক ধার করার ডেটা প্রিপেয়ার করা
+            const borrowingPayload = {
+                Id: BorrowBook._id,
+                Title: BorrowBook.title,
+                Image: BorrowBook.coverImage,
+                Name: user.name,
+                Email: user.email,
                 borrowedAt,
                 returnDate,
             };
 
-            // 3. Save borrowing information
-            const borrowResponse = await fetch(
-                `${process.env.PUBLIC_SECRET_URL}/BorrowedBooks`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(data),
-                }
-            );
+            const apiUrl = process.env.NEXT_PUBLIC_SECRET_URL || "";
 
-            if (!borrowResponse.ok) {
-              showToast.error('Failed to save borrowing information. Please try again.');
-                return;
+            // ৪. বুক ধার করার ইনফরমেশন সেভ করা (POST Request)
+            const borrowResponse = await fetch(`${apiUrl}/BorrowedBooks`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(borrowingPayload),
+            });
+
+            if (!borrowResponse) {
+                showToast.success("Book borrowed successfully!");
             }
-             if(borrowResponse.ok) {
-                showToast.success('Borrowing information saved successfully!');
+            if(borrowResponse.ok){
+                showToast.success("Book borrowed successfully!");
+                setIsOpen(false); // ডায়ালগ মোডাল বন্ধ করবে
+                form.reset(); // ফর্মের ইনপুট ক্লিয়ার করবে
+                router.refresh(); // নতুন ডেটা রিফ্লেক্ট করার জন্য পেজ রিফ্রেশ করবে
             }
 
-            // Update available book copies
-            const updateResponse = await fetch(
-                `${process.env.PUBLIC_SECRET_URL}/BookCopesReduce/${BorrowBook._id}`,
-                {
-                    method: "PATCH",
-                }
-            );
-            if(updateResponse.ok) {
-                router.refresh(); // Refresh the page to reflect changes
-                showToast.success('Book copies updated successfully!');
-            }
-            // 5. Success
-            setIsOpen(false);
-            form.reset();
+            // ৫. বইয়ের কপি একটি কমিয়ে দেওয়া (PATCH Request)
+            const updateResponse = await fetch(`${apiUrl}/BookCopesDecrease/${BorrowBook._id}`, {
+                method: "PATCH",
+            });
+
+            // ৬. সবকিছু সফল হলে একবারে ফাইনাল সাকসেস অ্যাকশন
             showToast.success("Book borrowed successfully!");
+            setIsOpen(false); // ডায়ালগ মোডাল বন্ধ করবে
+            form.reset(); // ফর্মের ইনপুট ক্লিয়ার করবে
+            router.refresh(); // নতুন ডেটা রিফ্লেক্ট করার জন্য পেজ রিফ্রেশ করবে
 
-        } catch (error) {
-           showToast.error("Something went wrong")
+        } catch (err) {
+          
+            showToast.error("Something went wrong. Please try again later.");
         } finally {
+            // এরর আসুক বা সাকসেস হোক, লোডিং স্টেট ফলস হবেই
             setLoading(false);
         }
     };

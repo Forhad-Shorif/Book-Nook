@@ -1,60 +1,106 @@
-'use client'
+"use client"
 
-import { Button } from "@/components/ui/button"
 import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Book } from "@/Type/type"
-import { showToast } from "@/utils/Toast";
+import { showToast } from "@/utils/Toast"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Delete02Icon, AlertCircleIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
 const DeleteBookForm = ({ book }: { book: Book }) => {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    const handleDelete = async () => {
-        const bookId = book._id;
-        try {
-            const response = await fetch(`${process.env.PUBLIC_SECRET_URL}/DeleteBook/${bookId}`, {
-                method: "DELETE",
-            });
+  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // ফর্মের ডিফল্ট সাবমিট বিহেভিয়ার আটকাবে
+    setLoading(true);
 
-            if (response.ok) {
-                showToast.success("Book deleted successfully!");
-            } 
-        } catch (error) {
-            showToast.error("Error deleting the book:");
-        }
+    const bookId = book._id;
+    if (!bookId) {
+      showToast.error("Book ID is missing.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_SECRET_URL || "";
+      const response = await fetch(`${apiUrl}/DeleteBook/${bookId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        showToast.error("Failed to delete the book. Please try again.");
+        return;
+      }
+
+      showToast.success("Book deleted successfully!");
+      setOpen(false); // ডায়ালগ বন্ধ করবে
+      router.refresh(); // ডেটা রিফ্রেশ করবে
+    } catch (error) {
+      showToast.error("Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        {/* কাস্টম ট্র্যাশ বাটন স্টাইল */}
+        <DialogTrigger className="inline-flex items-center justify-center gap-2 rounded-xl text-sm font-medium transition-all duration-200 border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white h-9 px-4 py-2 cursor-pointer shadow-[0_4px_12px_rgba(239,68,68,0.1)]">
+          <HugeiconsIcon icon={Delete02Icon} size={16} />
+          Delete 
+        </DialogTrigger>
         
-    };
+        {/* প্রিমিয়াম উইন্ডো স্টাইল - এডিট ফর্মের সাথে হুবহু মিল রেখে */}
+        <DialogContent className="w-[calc(100%-2rem)] sm:max-w-sm mx-auto rounded-3xl border border-white/15 bg-slate-900/95 p-6 backdrop-blur-2xl text-slate-100 shadow-[0_30px_100px_rgba(0,0,0,0.8)] transition-all duration-300">
+          <form className="space-y-6">
+            <div className="flex flex-col items-center text-center space-y-3 pt-2">
+              {/* ওয়ার্নিং গ্লোয়িং আইকন */}
+              <div className="w-12 h-12 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)] animate-pulse">
+                <HugeiconsIcon icon={AlertCircleIcon} size={24} />
+              </div>
+              
+              <DialogHeader className="space-y-1">
+                <DialogTitle className="text-xl font-bold text-white font-heading tracking-wide">
+                  Confirm Deletion
+                </DialogTitle>
+                <DialogDescription className="text-xs text-slate-400 max-w-[280px]">
+                  Are you sure you want to delete <span className="text-red-400 font-semibold">&ldquo;{book.title}&rdquo;</span>? This action cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
+            </div>
 
-    return (
-        <div>
-            <Dialog>
-                <form>
-                    <DialogTrigger render={<Button variant="outline">Delete Book</Button>} />
-                    <DialogContent className="sm:max-w-sm">
-                        <DialogHeader>
-                            <DialogTitle>Delete Book</DialogTitle>
-                            <DialogDescription>
-                                Are you sure you want to delete this book? This action cannot be undone.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                            <DialogClose render={<Button variant="outline">Cancel</Button>} />
-                            <Button type="submit" onClick={handleDelete}>
-                                Delete Book
-                            </Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </form>
-            </Dialog>
-        </div>
-    );
+            {/* বোতাম অপশনসমূহ */}
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 pt-1">
+              <DialogClose className="w-full sm:flex-1 rounded-full border border-white/15 bg-white/5 text-slate-300 hover:bg-white/10 text-sm font-medium h-10 cursor-pointer flex items-center justify-center transition-all duration-200">
+                Cancel
+              </DialogClose>
+              <button
+                type="button"
+                disabled={loading}
+                onClick={handleDelete}
+                className="w-full sm:flex-1 rounded-full bg-red-500 font-bold text-white hover:bg-red-600 cursor-pointer h-10 text-sm disabled:opacity-50 shadow-[0_4px_20px_rgba(239,68,68,0.2)] transition-all duration-200 flex items-center justify-center gap-1.5"
+              >
+                {loading ? "Deleting..." : "Delete Now"}
+              </button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 };
 
 export default DeleteBookForm;

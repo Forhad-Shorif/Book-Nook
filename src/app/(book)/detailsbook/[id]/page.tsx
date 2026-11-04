@@ -19,7 +19,7 @@ const BookDetailsPage = async ({ params }: BookDetailsPageProps) => {
 
 
     // 2. Fetch book details from backend API
-    const res = await fetch(`${process.env.PUBLIC_SECRET_URL}/books/${id}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/books/${id}`);
 
     // 3. Handle response errors gracefully
     if (!res.ok) {
