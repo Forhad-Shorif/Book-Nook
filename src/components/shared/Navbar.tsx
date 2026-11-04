@@ -107,11 +107,11 @@ function UserAvatarMenu() {
 
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-white">
-                    {user?.name || "No name"}
+                    {user?.name || "No Name"}
                   </p>
 
                   <p className="truncate text-xs font-normal text-slate-400">
-                    {user?.email || "No email"}
+                    {user?.email || "No Email"}
                   </p>
                 </div>
               </div>
