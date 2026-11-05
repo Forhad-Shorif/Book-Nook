@@ -16,30 +16,6 @@ export default function BookNookGuide() {
     const { data: session, error } = authClient.useSession();
     const user = session?.user;
 
-    if (!user) {
-        return (
-            <div className="flex min-h-[60vh] items-center justify-center px-4 py-10">
-                <div className="w-full max-w-sm rounded-2xl border border-amber-500/20 bg-slate-900/80 p-6 text-center backdrop-blur-xl shadow-xl">
-
-                    <h3 className="text-lg font-bold text-white mb-2">
-                        Authentication Required
-                    </h3>
-
-                    <p className="text-xs sm:text-sm text-slate-300 mb-6 leading-relaxed text-center sm:text-left px-2 sm:px-0">
-                        Please{' '}
-                        <Link
-                            href="/sign-in"
-                            className="relative inline-block text-amber-400 font-bold underline decoration-amber-400/50 underline-offset-4 hover:text-amber-300 hover:decoration-amber-300 transition-all duration-300"
-                        >
-                            login
-                        </Link>{' '}
-                        to explore the website and access all features. Your account ensures a personalized experience and secure access to your books and reviews.
-                    </p>
-                   
-                </div>
-            </div>
-        );
-    }
 
     const steps = [
         {
@@ -93,13 +69,13 @@ export default function BookNookGuide() {
     ];
 
     return (
-        <section className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden bg-slate-950/80 rounded-3xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)] backdrop-blur-xl">
+        <section className="relative py-5 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden bg-slate-950/80 rounded-3xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)] backdrop-blur-xl">
 
             {/* Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-gradient-to-tr from-amber-500/10 via-indigo-600/10 to-transparent blur-[130px] pointer-events-none -z-10" />
 
             {/* Section Header */}
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="text-center max-w-3xl mx-auto mb-4 sm:mb-8">
                 <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.25em] text-amber-300 backdrop-blur-md shadow-[0_0_15px_rgba(245,158,11,0.15)]">
                     ✨ Simple & Friendly Guide
                 </span>
@@ -112,52 +88,66 @@ export default function BookNookGuide() {
             </div>
 
             {/* Guide Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {steps.map((step, idx) => (
-                    <div
-                        key={idx}
-                        className={`group relative rounded-3xl border ${step.border} bg-slate-900/70 p-7 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 ${step.glow} flex flex-col justify-between`}
-                    >
-                        {/* Card Content */}
-                        <div>
-                            <div className="flex items-center justify-between mb-6">
-                                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${step.color} flex items-center justify-center text-white shadow-lg shadow-black/40 group-hover:scale-110 transition-transform duration-300`}>
-                                    <HugeiconsIcon icon={step.icon} size={26} />
+            {user ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {steps.map((step, idx) => (
+                        <div
+                            key={idx}
+                            className={`group relative rounded-3xl border ${step.border} bg-slate-900/70 p-7 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 ${step.glow} flex flex-col justify-between`}
+                        >
+                            {/* Card Content */}
+                            <div>
+                                <div className="flex items-center justify-between mb-6">
+                                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${step.color} flex items-center justify-center text-white shadow-lg shadow-black/40 group-hover:scale-110 transition-transform duration-300`}>
+                                        <HugeiconsIcon icon={step.icon} size={26} />
+                                    </div>
+                                    <span className="text-3xl font-black text-slate-700/80 font-mono tracking-tighter">
+                                        {step.stepNumber}
+                                    </span>
                                 </div>
-                                <span className="text-3xl font-black text-slate-700/80 font-mono tracking-tighter">
-                                    {step.stepNumber}
-                                </span>
+
+                                {/* Badge */}
+                                <div className="mb-3">
+                                    <span className="inline-block text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700/60">
+                                        {step.badge}
+                                    </span>
+                                </div>
+
+                                {/* Title and Subtitle */}
+                                <h3 className={`text-xl font-bold text-white mb-1 transition-colors ${step.textColor}`}>
+                                    {step.title}
+                                </h3>
+                                <p className="text-xs font-medium text-amber-400/90 mb-3">
+                                    {step.subtitle}
+                                </p>
+
+                                {/* Main Description */}
+                                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                                    {step.description}
+                                </p>
                             </div>
 
-                            {/* Badge */}
-                            <div className="mb-3">
-                                <span className="inline-block text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700/60">
-                                    {step.badge}
-                                </span>
+                            {/*  */}
+                            <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-500">
+                                <span>Step {step.stepNumber} of 04</span>
+                                <span className="group-hover:text-white transition-colors">Learn more →</span>
                             </div>
-
-                            {/* Title and Subtitle */}
-                            <h3 className={`text-xl font-bold text-white mb-1 transition-colors ${step.textColor}`}>
-                                {step.title}
-                            </h3>
-                            <p className="text-xs font-medium text-amber-400/90 mb-3">
-                                {step.subtitle}
-                            </p>
-
-                            {/* Main Description */}
-                            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                                {step.description}
-                            </p>
                         </div>
-
-                        {/*  */}
-                        <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-500">
-                            <span>Step {step.stepNumber} of 04</span>
-                            <span className="group-hover:text-white transition-colors">Learn more →</span>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center gap-4 text-center py-4">
+                    <p className="text-sm font-medium tracking-wide text-slate-400">
+                        Please log in to see the guide and get started with BookNook.
+                    </p>
+                    <Link
+                        href='/sign-in'
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-400/10 border border-amber-400/20 text-sm font-semibold text-amber-400 hover:bg-amber-400/20 hover:text-white transition-all"
+                    >
+                        Sign In
+                    </Link>
+                </div>
+            )}
         </section>
     );
 }

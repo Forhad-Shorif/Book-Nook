@@ -20,28 +20,7 @@ const ReviewCards = ({ item }: { item: UserReview }) => {
     const router = useRouter();
     const { data: session, error } = authClient.useSession();
     const user = session?.user
-    if (!user) {
-       return(
-         <div className="flex min-h-[60vh] items-center justify-center px-4 py-10">
-            <div className="w-full max-w-sm rounded-2xl border border-amber-500/20 bg-slate-900/80 p-6 text-center backdrop-blur-xl shadow-xl">
-                <h3 className="text-lg font-bold text-white mb-2">
-                    Authentication Required
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-300 mb-6 leading-relaxed text-center sm:text-left px-2 sm:px-0">
-                    Please{' '}
-                    <Link
-                        href="/sign-in"
-                        className="relative inline-block text-amber-400 font-bold underline decoration-amber-400/50 underline-offset-4 hover:text-amber-300 hover:decoration-amber-300 transition-all duration-300"
-                    >
-                        login
-                    </Link>{' '}
-                    to access your books and reviews.
-                </p>
-            </div>
-        </div>
-       )
-    }
-
+      
     const handleDeleteReview = async () => {
         if (!user) {
             return;
