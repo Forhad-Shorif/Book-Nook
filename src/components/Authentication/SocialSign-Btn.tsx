@@ -18,7 +18,7 @@ const SocialSignBtn = () => {
             if (data) {
                 showToast.success('Sign In with Google Successful! Redirecting...');
                 router.push('/');
-                router.refresh(); // Ensure the session is updated after sign-in
+                router.refresh(); 
             } 
     };
 

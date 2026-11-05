@@ -7,7 +7,7 @@ export interface BorrowedBook {
     Image?: string;
     Name?: string;
     Email?: string;
-    borrowedAt?: string; // অথবা Date টাইপও ব্যবহার করতে পারো যদি ডেট অবজেক্ট হিসেবে রাখো
+    borrowedAt?: string;
     returnDate?: string;
 }
 const BorrowedBookCards = ({ book }: { book: BorrowedBook[] }) => {
@@ -78,7 +78,7 @@ const BorrowedBookCards = ({ book }: { book: BorrowedBook[] }) => {
                                     </div>
                                 </div>
 
-                                {/* Placeholder for Delete Button (যেটি পরে অন্য কম্পোনেন্টে যুক্ত করবে) */}
+                                {/* Placeholder for Delete Button  */}
                                 <div className="mt-3 flex items-center justify-end">
                                   <BorrowedBookDelete book={item} />  
                                 </div>

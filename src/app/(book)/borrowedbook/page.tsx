@@ -5,8 +5,9 @@ import { headers } from "next/headers";
 const BorrowedBook = async () => {
 
     const session = await auth.api.getSession({
-        headers: await headers() // you need to pass the headers object.
-    })
+        headers: await headers() 
+    });
+
     const user = session?.user
     if(!user) {
         return (
@@ -40,4 +41,4 @@ const BorrowedBook = async () => {
     );
 };
 
-export default BorrowedBook;
+export default BorrowedBook; 

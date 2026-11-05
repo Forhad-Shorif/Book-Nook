@@ -21,8 +21,8 @@ const exploreLinks = [
   { label: "Home", href: "/" },
   { label: "All Books", href: "/books" },
   { label: "Add a Book", href: "/add-book" },
-  { label: "My Books", href: "/my-books" },
-  { label: "My Borrows", href: "/my-borrows" },
+  { label: "My Books", href: "/my-book" },
+  { label: "My Borrows", href: "/borrowedbook" },
 ];
 
 const accountLinks = [
@@ -61,19 +61,19 @@ const socialLinks = [
 const contactItems = [
   {
     label: "Visit",
-    value: "Dhanmondi, Dhaka",
-    href: undefined,
+    value: "Shibchar,Madaripur, Dhaka",
+    href: "https://goo.gl/maps/your-location-link",
     icon: Location01Icon,
   },
   {
     label: "Email",
-    value: "hello@booknook.com",
-    href: "mailto:hello@booknook.com",
+    value: "forhadshorif79@gmail.com",
+    href: "forhadshorif79@gmail.com",
     icon: Mail01Icon,
   },
   {
     label: "Call",
-    value: "+880 1700-000000",
+    value: "+8801700000000",
     href: "tel:+8801700000000",
     icon: Call02Icon,
   },
@@ -354,7 +354,7 @@ const Footer = () => {
                   </a>
                 ) : (
                   <div
-                    key={item.label}
+                    key={""}
                     className="flex items-center gap-3 rounded-xl border border-white/5 bg-white/[0.02] p-2.5"
                   >
                     {content}

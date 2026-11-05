@@ -23,7 +23,7 @@ const DeleteBookForm = ({ book }: { book: Book }) => {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // ফর্মের ডিফল্ট সাবমিট বিহেভিয়ার আটকাবে
+    e.preventDefault(); 
     setLoading(true);
 
     const bookId = book._id;
@@ -43,10 +43,11 @@ const DeleteBookForm = ({ book }: { book: Book }) => {
         showToast.error("Failed to delete the book. Please try again.");
         return;
       }
-
-      showToast.success("Book deleted successfully!");
-      setOpen(false); // ডায়ালগ বন্ধ করবে
-      router.refresh(); // ডেটা রিফ্রেশ করবে
+      if(response.ok) {
+         showToast.success("Book deleted successfully!");
+         setOpen(false);
+         router.refresh();
+      }
     } catch (error) {
       showToast.error("Something went wrong!");
     } finally {
@@ -57,21 +58,21 @@ const DeleteBookForm = ({ book }: { book: Book }) => {
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
-        {/* কাস্টম ট্র্যাশ বাটন স্টাইল */}
+        {/* Dialog Trigger */}
         <DialogTrigger className="inline-flex items-center justify-center gap-2 rounded-xl text-sm font-medium transition-all duration-200 border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white h-9 px-4 py-2 cursor-pointer shadow-[0_4px_12px_rgba(239,68,68,0.1)]">
           <HugeiconsIcon icon={Delete02Icon} size={16} />
-          Delete 
+          Delete
         </DialogTrigger>
-        
-        {/* প্রিমিয়াম উইন্ডো স্টাইল - এডিট ফর্মের সাথে হুবহু মিল রেখে */}
+
+        {/* Dialog Content */}
         <DialogContent className="w-[calc(100%-2rem)] sm:max-w-sm mx-auto rounded-3xl border border-white/15 bg-slate-900/95 p-6 backdrop-blur-2xl text-slate-100 shadow-[0_30px_100px_rgba(0,0,0,0.8)] transition-all duration-300">
           <form className="space-y-6">
             <div className="flex flex-col items-center text-center space-y-3 pt-2">
-              {/* ওয়ার্নিং গ্লোয়িং আইকন */}
+              {/* Warning Icon */}
               <div className="w-12 h-12 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)] animate-pulse">
                 <HugeiconsIcon icon={AlertCircleIcon} size={24} />
               </div>
-              
+
               <DialogHeader className="space-y-1">
                 <DialogTitle className="text-xl font-bold text-white font-heading tracking-wide">
                   Confirm Deletion
@@ -82,7 +83,7 @@ const DeleteBookForm = ({ book }: { book: Book }) => {
               </DialogHeader>
             </div>
 
-            {/* বোতাম অপশনসমূহ */}
+            {/* Dialog Footer */}
             <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 pt-1">
               <DialogClose className="w-full sm:flex-1 rounded-full border border-white/15 bg-white/5 text-slate-300 hover:bg-white/10 text-sm font-medium h-10 cursor-pointer flex items-center justify-center transition-all duration-200">
                 Cancel

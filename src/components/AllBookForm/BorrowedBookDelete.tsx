@@ -64,7 +64,7 @@ const BorrowedBookDelete = ({ book }: { book: BorrowedBook }) => {
                 const apiUrl = process.env.NEXT_PUBLIC_SECRET_URL || "";
 
                 // ১. ব্যাকএন্ডে রিভিউ বা রিটার্ন হিস্ট্রি পোস্ট করা
-                await fetch(`${apiUrl}/ReviewPost`, {
+           await fetch(`${apiUrl}/ReviewPost`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ const BorrowedBookDelete = ({ book }: { book: BorrowedBook }) => {
 
             }
   
-              // ৫. বইয়ের কপি একটি কমিয়ে দেওয়া (PATCH Request)
+              // ৫. বইয়ের কপি একটি দেওয়া (PATCH Request)
             const updateResponse = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/BookCopesIncrease/${book._id}`, {
                 method: "PATCH",
             });
@@ -86,11 +86,9 @@ const BorrowedBookDelete = ({ book }: { book: BorrowedBook }) => {
             if (response) {
                 showToast.success('Borrowed book returned successfully!');
                 router.refresh();
+                 setOpen(false);
             }
 
-            if (response.ok) {
-                setOpen(false);
-            }
             if(!response){
                 showToast.error('Failed to return the borrowed book. Please try again.');
             }
@@ -105,13 +103,13 @@ const BorrowedBookDelete = ({ book }: { book: BorrowedBook }) => {
     return (
         <div>
             <Dialog open={open} onOpenChange={setOpen}>
-                {/* প্রিমিয়াম ট্র্রিগার বাটন */}
+                {/* Dialog Trigger */}
                 <DialogTrigger className="inline-flex items-center justify-center gap-2 rounded-xl text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50 border border-white/10 bg-slate-900 text-slate-100 shadow-md hover:bg-slate-800 hover:border-amber-500/50 hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] h-10 px-5 py-2 cursor-pointer">
                     <HugeiconsIcon icon={ArrowLeftIcon} size={16} />
                     Return Book
                 </DialogTrigger>
 
-                {/* আল্ট্রা প্রিমিয়াম গ্লাসমরফিক ডায়ালগ */}
+                {/* Dialog Content */}
                 <DialogContent className="w-[calc(100%-2rem)] sm:max-w-md mx-auto rounded-[2rem] border border-white/10 bg-slate-950/80 p-6 sm:p-8 backdrop-blur-3xl text-slate-100 shadow-[0_30px_100px_rgba(0,0,0,0.9),0_0_50px_rgba(245,158,11,0.05)] max-h-[88vh] overflow-y-auto transition-all duration-500 animate-in fade-in-50 zoom-in-95">
                     <form onSubmit={handleReturnSubmit} className="space-y-6">
                         <DialogHeader className="text-left">
@@ -126,7 +124,7 @@ const BorrowedBookDelete = ({ book }: { book: BorrowedBook }) => {
                             </DialogDescription>
                         </DialogHeader>
 
-                        {/* অপশনাল রিভিউ টেক্সট এরিয়া */}
+                        {/* Review Input */}
                         <div className="space-y-5 py-1">
                             <div className="group flex flex-col gap-1.5">
                                 <label className="text-xs font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-amber-400 transition-colors duration-300">
@@ -146,7 +144,7 @@ const BorrowedBookDelete = ({ book }: { book: BorrowedBook }) => {
                             </div>
                         </div>
 
-                        {/* বোতাম অপশনসমূহ */}
+                        {/* Dialog Footer */}
                         <DialogFooter className="flex flex-col-reverse sm:flex-row gap-3 pt-3 border-t border-white/5">
                             <DialogClose className="w-full sm:flex-1 rounded-2xl border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 text-sm font-semibold h-11 cursor-pointer flex items-center justify-center transition-all duration-300 active:scale-98">
                                 Cancel

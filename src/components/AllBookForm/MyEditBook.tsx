@@ -10,9 +10,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-// import { Field, FieldGroup } from "@/components/ui/field"
-// import { Input } from "@/components/ui/input"
-// import { Label } from "@/components/ui/label"
 import { Book } from "@/Type/type"
 import { BookOpen01Icon, File01Icon, Image01Icon, Layers01Icon, Tag01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
@@ -61,9 +58,11 @@ const EditBookForm = ({ book }: { book: Book }) => {
                 return;
             }
 
-            showToast.success("Book updated successfully!");
-            setOpen(false); // ডায়ালগ বন্ধ করবে
-            router.refresh(); // পেজ রিফ্রেশ করবে
+            if (response.ok) {
+                showToast.success("Book updated successfully!");
+                setOpen(false);
+                router.refresh();
+            }
         } catch (error) {
             showToast.error("Something went wrong!");
         } finally {
@@ -109,7 +108,7 @@ const EditBookForm = ({ book }: { book: Book }) => {
                                 </div>
                             </div>
 
-                            {/* Author & Category - Mobile এ ১ কলাম, ট্যাব/ডেস্কটপে ২ কলাম */}
+                            {/* Author & Category - Mobile 1 colom and desktop 2 colom */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="group">
                                     <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5 group-focus-within:text-amber-400 transition-colors">

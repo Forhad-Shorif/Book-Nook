@@ -26,8 +26,8 @@ const Review = async () => {
     }
 
     return (
-        <section className="py-8 px-4 max-w-5xl mx-auto">
-            {/* সেকশন হেডার - স্লিক ও কমপ্যাক্ট */}
+        <section className="relative py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto overflow-hidden bg-slate-950/60 rounded-3xl border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.6)] backdrop-blur-xl my-10">
+            {/* Section Header */}
             <div className="text-center mb-6">
                 <span className="inline-block px-2 py-0.5 mb-1 text-[9px] font-bold tracking-widest text-amber-400 uppercase bg-amber-400/10 rounded-full border border-amber-400/20">
                     Feedback
@@ -37,7 +37,7 @@ const Review = async () => {
                 </h2>
             </div>
 
-            {/* রিভিউ কার্ড গ্রিড */}
+            {/* Review Card Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {reviews.map((item: UserReview, index: number) => <ReviewCards key={index} item={item} />)}
             </div>

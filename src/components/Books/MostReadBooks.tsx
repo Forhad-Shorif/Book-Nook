@@ -3,10 +3,10 @@ import { Book } from '@/Type/type';
 import { showToast } from '@/utils/Toast';
 import React from 'react';
 
-// ব্যাকএন্ড থেকে লেটেস্ট ১০টি বই ফেচ করার ফাংশন
+// ব্যাকএন্ড থেকে লেটেস্ট 6 টি বই ফেচ করার ফাংশন
 const fetchLatestBooks = async (): Promise<Book[]> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/LatestBooks`,{next: { revalidate: 10 }}); // 60 সেকেন্ডের জন্য ক্যাশ করা হবে
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/LatestBooks`,{next: { revalidate: 1 }});
 
     if (!response.ok) {
       return [];
@@ -21,14 +21,14 @@ const fetchLatestBooks = async (): Promise<Book[]> => {
 };
 
 const MostReadBooks = async () => {
-  // ডাটা ফেচ করে সরাসরি ভ্যারিয়েবলে রাখা হলো
+  
   const books: Book[] = await fetchLatestBooks();
 
   return (
     <section className="bg-[#07101c] py-12 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         
-        {/* Header Section (শুধু হেডার এবং সাবটাইটেল) */}
+        {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 border-b border-white/10 pb-6">
           <div>
             <span className="inline-block text-xs font-semibold uppercase tracking-widest text-amber-400 mb-2">

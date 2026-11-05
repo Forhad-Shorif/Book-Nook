@@ -81,8 +81,8 @@ const AddBookForm = () => {
 
             if (res.ok) {
                 showToast.success("Book added successfully!");
-                (e.target as HTMLFormElement).reset(); // ফর্ম ক্লিয়ার করা
-                router.refresh(); // পেজ রিফ্রেশ করে লেটেস্ট ডেটা দেখাবে
+                (e.target as HTMLFormElement).reset(); 
+                router.refresh();
             } else {
                 showToast.error("Failed to add book. Please try again.");
             }

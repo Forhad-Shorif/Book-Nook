@@ -38,6 +38,16 @@ const getLocalDate = () => {
 
     return `${year}-${month}-${day}`;
 };
+export interface BorrowedBook {
+    _id?: string;
+    Id?: string;
+    Title?: string;
+    Image?: string;
+    Name?: string;
+    Email?: string;
+    borrowedAt?: string;
+    returnDate?: string;
+}
 
 const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
 
@@ -46,6 +56,7 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
+
     const availableCopies = Number(BorrowBook.totalCopies ?? 1);
 
     const handleBorrowSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,8 +64,16 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
 
         if (loading) return;
 
-        // অ্যাসিনক্রোনাস অপারেশনের আগে ফর্ম ডেটা ক্যাপচার করে রাখা হলো
-        const form = e.currentTarget;
+        const { data: session, error: sessionError } = await authClient.getSession();
+        const user = session?.user;
+
+        // ২. ইউজার সেশন চেক
+        if (!user || sessionError) {
+            showToast.error("You must be logged in to borrow a book.");
+            return;
+        }
+
+        const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
 
         const returnDate = String(formData.get("returnDate") || "");
@@ -79,12 +98,16 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
         setLoading(true);
 
         try {
-            // ২. ইউজার সেশন চেক
-            const { data: session, error: sessionError } = await authClient.getSession();
-            const user = session?.user;
+            const apiUrl = process.env.NEXT_PUBLIC_SECRET_URL || "";
 
-            if (!user || sessionError) {
-                showToast.error("You must be logged in to borrow a book.");
+            // ইউজার ইতিমধ্যে এই বই ধার করেছে কিনা তা চেক করা
+            const fetchData = await fetch(`${apiUrl}/BorrowedBooksGet/${user?.email}`, { next: { revalidate: 1 } });
+            const data = await fetchData.json();
+
+            const isAlreadyBorrowed = data.some((item: BorrowedBook) => item.Id === BorrowBook._id);
+
+            if (isAlreadyBorrowed) {
+                showToast.error("You have already borrowed this book.");
                 setLoading(false);
                 return;
             }
@@ -100,8 +123,6 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
                 returnDate,
             };
 
-            const apiUrl = process.env.NEXT_PUBLIC_SECRET_URL || "";
-
             // ৪. বুক ধার করার ইনফরমেশন সেভ করা (POST Request)
             const borrowResponse = await fetch(`${apiUrl}/BorrowedBooks`, {
                 method: "POST",
@@ -111,35 +132,33 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
                 body: JSON.stringify(borrowingPayload),
             });
 
-            if (!borrowResponse) {
+            // পরিবর্তন এখানে: POST রিকোয়েস্ট সফল হলেই সাকসেস দেখাবে
+            if (borrowResponse.ok) {
+
+                // ৫. বইয়ের কপি একটি কমিয়ে দেওয়ার চেষ্টা করা (PATCH Request)
+                // এটি ফেইল করলেও ইউজার কোনো এরর দেখবে না, ব্যাকগ্রাউন্ডে ট্রাই করবে
+                fetch(`${apiUrl}/BookCopesDecrease/${BorrowBook._id}`, {
+                    method: "PATCH",
+                }).catch(err => console.error("Background quantity update failed:", err));
+
+                // কোয়ান্টিটি কমুক বা না কমুক, ইউজারকে সাকসেস মেসেজ দেখানো হবে
                 showToast.success("Book borrowed successfully!");
+                setIsOpen(false);
+                form.reset();
+                router.refresh();
+
+            } else {
+                showToast.error("Failed to borrow the book. Please try again.");
             }
-            if(borrowResponse.ok){
-                showToast.success("Book borrowed successfully!");
-                setIsOpen(false); // ডায়ালগ মোডাল বন্ধ করবে
-                form.reset(); // ফর্মের ইনপুট ক্লিয়ার করবে
-                router.refresh(); // নতুন ডেটা রিফ্লেক্ট করার জন্য পেজ রিফ্রেশ করবে
-            }
 
-            // ৫. বইয়ের কপি একটি কমিয়ে দেওয়া (PATCH Request)
-            const updateResponse = await fetch(`${apiUrl}/BookCopesDecrease/${BorrowBook._id}`, {
-                method: "PATCH",
-            });
-
-            // ৬. সবকিছু সফল হলে একবারে ফাইনাল সাকসেস অ্যাকশন
-            showToast.success("Book borrowed successfully!");
-            setIsOpen(false); // ডায়ালগ মোডাল বন্ধ করবে
-            form.reset(); // ফর্মের ইনপুট ক্লিয়ার করবে
-            router.refresh(); // নতুন ডেটা রিফ্লেক্ট করার জন্য পেজ রিফ্রেশ করবে
-
-        } catch (err) {
-          
-            showToast.error("Something went wrong. Please try again later.");
+        } catch (error) {
+            console.error("Borrow error:", error);
+            showToast.error("Something went wrong!");
         } finally {
-            // এরর আসুক বা সাকসেস হোক, লোডিং স্টেট ফলস হবেই
             setLoading(false);
         }
     };
+
 
     return (
         <div className="flex flex-col items-center gap-3 sm:flex-row">

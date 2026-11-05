@@ -3,11 +3,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { HugeiconsIcon } from "@hugeicons/react";
-import { 
-  UserCircleIcon, 
-  Mail01Icon, 
-  LockPasswordIcon, 
-  Image01Icon 
+import {
+    UserCircleIcon,
+    Mail01Icon,
+    LockPasswordIcon,
+    Image01Icon
 } from "@hugeicons/core-free-icons";
 import SocialSignBtn from './SocialSign-Btn';
 import { authClient } from '@/lib/auth-client';
@@ -18,9 +18,9 @@ const SignUpForm = () => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
         // ১. ফর্মের টার্গেট থেকে সমস্ত ডেটা একসাথে নিয়ে নেওয়া
         const formData = new FormData(e.currentTarget);
         const User = Object.fromEntries(formData.entries()) as {
@@ -30,10 +30,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             password: string;
             confirmPassword: string;
         };
-         
+
         const { name, email, image, password } = User;
-        const updatedUser = { name, email, image, password }; // confirmPassword বাদ দিয়ে নতুন অবজেক্ট তৈরি করা হলো
-         console.log('User Data:', updatedUser);
+        const updatedUser = { name, email, image, password };
+
         // পাসওয়ার্ড মিল আছে কিনা চেক করা
         if (User.password !== User.confirmPassword) {
             showToast.error('Passwords do not match. Please try again.');
@@ -42,35 +42,35 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
         setLoading(true);
 
-        
-            // Better Auth ক্লায়েন্ট কল (confirmPassword বাদ দিয়ে বাকিগুলো পাঠানো হলো)
-            const { data, error } = await authClient.signUp.email({
-              ...updatedUser
-            });
-            if (error) {
-                setLoading(false);
-                showToast.error(`Sign Up Failed: ${error.message}`);
-                return;
-            }
-            if (data) {
-                showToast.success('Sign Up Successful! You can now sign in.');
-                router.push('/');
-                router.refresh(); 
-            }
-      
-   };
+
+        // Better Auth ক্লায়েন্ট কল (confirmPassword বাদ দিয়ে বাকিগুলো পাঠানো হলো)
+        const { data, error } = await authClient.signUp.email({
+            ...updatedUser
+        });
+        if (error) {
+            setLoading(false);
+            showToast.error(`Sign Up Failed: ${error.message}`);
+            return;
+        }
+        if (data) {
+            showToast.success('Sign Up Successful! You can now sign in.');
+            router.push('/');
+            router.refresh();
+        }
+
+    };
 
     return (
         <div className="w-full max-w-md mx-auto">
             <div className="overflow-hidden rounded-3xl border border-white/15 bg-slate-900/60 p-8 backdrop-blur-2xl shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
-                
+
                 <div className="mb-6 text-center">
                     <h2 className="text-2xl font-bold tracking-tight text-white font-heading">Create Account</h2>
                     <p className="text-xs text-slate-400 mt-1">Join BookNook to explore and borrow books</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    
+
                     {/* Full Name */}
                     <div>
                         <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
@@ -90,7 +90,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                         </div>
                     </div>
 
-                    {/* Email */}
+                    {/* Email Field */}
                     <div>
                         <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
                             Email Address
@@ -103,10 +103,16 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                                 type="email"
                                 name="email"
                                 required
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                title="Please enter a valid email address containing '@' and '.'"
                                 placeholder="forhadshorif79@gmail.com"
                                 className="w-full rounded-xl border border-white/15 bg-slate-950/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30 transition-all"
                             />
                         </div>
+                        {/* Help Text */}
+                        <p className="mt-1.5 text-[11px] text-slate-400 flex items-center gap-1">
+                            <span className="text-amber-400">ℹ️</span> Must include {"@"} and {"."}
+                        </p>
                     </div>
 
                     {/* Profile Image URL */}
@@ -127,7 +133,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                         </div>
                     </div>
 
-                    {/* Password */}
+                    {/* Password Field */}
                     <div>
                         <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
                             Password
@@ -140,13 +146,19 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                                 type="password"
                                 name="password"
                                 required
+                                pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
+                                title="Password must contain at least 8 characters, including at least 1 number and 1 uppercase letter."
                                 placeholder="••••••••"
                                 className="w-full rounded-xl border border-white/15 bg-slate-950/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30 transition-all"
                             />
                         </div>
+                        {/* Help Text */}
+                        <p className="mt-1.5 text-[11px] text-slate-400 flex items-center gap-1">
+                            <span className="text-amber-400">🔒</span> Must be 8+ chars with 1 uppercase letter & 1 number (e.g. BookNook123)
+                        </p>
                     </div>
 
-                    {/* Confirm Password */}
+                    {/* Confirm Password Field */}
                     <div>
                         <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
                             Confirm Password
@@ -158,11 +170,15 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                             <input
                                 type="password"
                                 name="confirmPassword"
+                                id="confirmPassword"
                                 required
                                 placeholder="••••••••"
                                 className="w-full rounded-xl border border-white/15 bg-slate-950/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30 transition-all"
                             />
                         </div>
+                        <p className="mt-1.5 text-[11px] text-slate-400 flex items-center gap-1">
+                            <span className="text-amber-400">✨</span> Please re-type your password to confirm
+                        </p>
                     </div>
 
                     {/* Submit Button */}
@@ -187,7 +203,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 </div>
 
                 {/* Social Login Buttons (Google & GitHub) */}
-                 <SocialSignBtn />
+                <SocialSignBtn />
                 {/* Sign In Redirect Link */}
                 <div className="mt-6 pt-6 border-t border-white/10 text-center text-xs text-slate-400">
                     Already have an account?{" "}

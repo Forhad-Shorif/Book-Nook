@@ -25,11 +25,7 @@ const SignInForm = () => {
             email: string;
             password: string;
         };
-          console.log('Credentials:', credentials);
         setLoading(true);
-
-        
-            // Better Auth সাইন-ইন কল (তোমার ব্যাকএন্ড লজিক অনুযায়ী ব্যবহার করতে পারো)
             
             const { data, error } = await authClient.signIn.email({
               ...credentials
@@ -43,7 +39,7 @@ const SignInForm = () => {
             if(data && data.user) {
                 router.push("/");
                 showToast.success('Sign In Successful!');
-                router.refresh(); // সেশন আপডেট করতে পেজ রিফ্রেশ করা
+                router.refresh();
             }
     };
 
@@ -60,7 +56,7 @@ const SignInForm = () => {
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     
-                    {/* Email Field */}
+                   {/* Email Field */}
                     <div>
                         <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
                             Email Address
@@ -73,10 +69,16 @@ const SignInForm = () => {
                                 type="email"
                                 name="email"
                                 required
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                title="Please enter a valid email address containing '@' and '.'"
                                 placeholder="forhadshorif79@gmail.com"
                                 className="w-full rounded-xl border border-white/15 bg-slate-950/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30 transition-all"
                             />
                         </div>
+                        {/* Help Text */}
+                        <p className="mt-1.5 text-[11px] text-slate-400 flex items-center gap-1">
+                            <span className="text-amber-400">ℹ️</span> Must include {"@"} and {"."} 
+                        </p>
                     </div>
 
                     {/* Password Field */}
@@ -92,10 +94,16 @@ const SignInForm = () => {
                                 type="password"
                                 name="password"
                                 required
+                                pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
+                                title="Password must contain at least 8 characters, including at least 1 number and 1 uppercase letter."
                                 placeholder="••••••••"
                                 className="w-full rounded-xl border border-white/15 bg-slate-950/70 py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30 transition-all"
                             />
                         </div>
+                        {/* Help Text */}
+                        <p className="mt-1.5 text-[11px] text-slate-400 flex items-center gap-1">
+                            <span className="text-amber-400">🔒</span> Must be 8+ chars with 1 uppercase letter & 1 number (e.g. BookNook123)
+                        </p>
                     </div>
 
                     {/* Submit Button */}

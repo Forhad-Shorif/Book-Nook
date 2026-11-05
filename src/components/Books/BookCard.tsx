@@ -17,7 +17,7 @@ interface AllBooksProps {
 const BookCard = ({ books }: AllBooksProps) => {
 
 
-  const filteredBooks = books || []; // Use the provided books directly without filtering
+  const filteredBooks = books || [];
   return (
     <div className="min-h-screen bg-[#07101c] text-slate-100 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
