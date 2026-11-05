@@ -34,6 +34,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
+import { showToast } from "@/utils/Toast";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -61,9 +62,10 @@ function UserAvatarMenu() {
           },
         },
       });
+      showToast.success("Sign out successful");
     } catch (error) {
-      console.error("Logout failed:", error);
-      alert("Failed to sign out. Please try again.");
+      showToast.error("Failed to sign out. Please try again.");
+      return;
     }
   };
 
