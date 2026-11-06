@@ -138,12 +138,6 @@ const HeroBanner = () => {
                           Browse Books
                           <HugeiconsIcon icon={ArrowRight01Icon} size={18} />
                         </Link>
-                        <Link
-                          href="/sign-up"
-                          className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:border-white/40 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-white/40 sm:px-6 sm:py-3"
-                        >
-                          {/* Join BookNook */}
-                        </Link>
                       </div>
                     </div>
                   </div>
