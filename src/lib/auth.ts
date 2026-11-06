@@ -4,6 +4,9 @@ import { betterAuth } from "better-auth";
 import { jwt } from "better-auth/plugins"
 
 // set Dns server for use client......................................
+import dns from "node:dns";
+
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 const client = new MongoClient(process.env.MONGODB_URI as string);
 const db = client.db("Book-Nook");
