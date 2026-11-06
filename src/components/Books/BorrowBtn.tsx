@@ -100,8 +100,10 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
         try {
             const apiUrl = process.env.NEXT_PUBLIC_SECRET_URL || "";
 
-            // ইউজার ইতিমধ্যে এই বই ধার করেছে কিনা তা চেক করা
-            const fetchData = await fetch(`${apiUrl}/BorrowedBooksGet/${user?.email}`, { next: { revalidate: 1 } });
+            // 2. ইউজার ইতিমধ্যে এই বই ধার করেছে কিনা তা চেক করা
+            const fetchData = await fetch(`${apiUrl}/BorrowedBooksGet/${user?.email}`,{
+                next: { revalidate: 1 },
+            });
             const data = await fetchData.json();
 
             const isAlreadyBorrowed = data.some((item: BorrowedBook) => item.Id === BorrowBook._id);
@@ -136,23 +138,18 @@ const BookDetailsShare = ({ BorrowBook }: { BorrowBook: Book }) => {
             if (borrowResponse.ok) {
 
                 // ৫. বইয়ের কপি একটি কমিয়ে দেওয়ার চেষ্টা করা (PATCH Request)
-                // এটি ফেইল করলেও ইউজার কোনো এরর দেখবে না, ব্যাকগ্রাউন্ডে ট্রাই করবে
-                fetch(`${apiUrl}/BookCopesDecrease/${BorrowBook._id}`, {
-                    method: "PATCH",
-                }).catch(err => console.error("Background quantity update failed:", err));
 
-                // কোয়ান্টিটি কমুক বা না কমুক, ইউজারকে সাকসেস মেসেজ দেখানো হবে
+                fetch(`${apiUrl}/BookCopesDecrease/${BorrowBook._id}`, { method: "PATCH" });
+
                 showToast.success("Book borrowed successfully!");
                 setIsOpen(false);
                 form.reset();
                 router.refresh();
-
             } else {
                 showToast.error("Failed to borrow the book. Please try again.");
             }
 
         } catch (error) {
-            console.error("Borrow error:", error);
             showToast.error("Something went wrong!");
         } finally {
             setLoading(false);

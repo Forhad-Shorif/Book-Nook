@@ -1,7 +1,6 @@
 import { auth } from "@/lib/auth";
 import ReviewCards from "./ReviewCards";
 import { headers } from "next/headers";
-import Link from "next/link";
 
 interface UserReview {
     _id: string;
@@ -18,8 +17,10 @@ const Review = async () => {
     })
     const user = session?.user
 
+ 
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/GetReview`, {
-        next: { revalidate: 10 }
+        next: { revalidate: 1 },
     });
     const reviews = await response.json();
 

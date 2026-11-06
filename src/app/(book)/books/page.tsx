@@ -1,13 +1,22 @@
 import { Book } from '@/Type/type';
-import React from 'react';
 import { HugeiconsIcon } from "@hugeicons/react";
 import { BookOpen01Icon } from "@hugeicons/core-free-icons";
 import AllBooksCards from '@/components/Books/AllBooksCards';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
 const FetchData: () => Promise<Book[]> = async () => {
+
+  const token = await auth.api.getToken({
+    headers: await headers()
+  });
+  const tokenValue = token?.token;
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/books`, {
-      next: { revalidate: 1 } 
+      headers: {
+        "authorization": `Bearer ${tokenValue}`
+      },
+      next: { revalidate: 1 }
     });
 
     if (!response.ok) {
@@ -51,7 +60,7 @@ const AllBookPage = async () => {
 
   return (
     <main className="relative min-h-screen bg-[#07101c] text-white px-4 sm:px-6 lg:px-8 py-10 overflow-hidden">
-      
+
       {/* Background Glow Effect */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-amber-500/10 via-indigo-600/10 to-transparent blur-[120px] pointer-events-none -z-10" />
 
@@ -61,11 +70,11 @@ const AllBookPage = async () => {
           <HugeiconsIcon icon={BookOpen01Icon} size={15} className="text-amber-400" />
           Explore Library
         </div>
-        
+
         <h1 className="mt-5 font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
           Browse All <span className="bg-gradient-to-r from-amber-400 via-indigo-300 to-amber-500 bg-clip-text text-transparent">Books</span>
         </h1>
-        
+
         <p className="mt-4 text-sm sm:text-base text-slate-400 max-w-xl mx-auto leading-relaxed">
           Discover thousands of hand-picked stories, financial guides, and historical masterpieces. Find your next favorite read today.
         </p>

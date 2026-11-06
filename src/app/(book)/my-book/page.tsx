@@ -11,8 +11,14 @@ import { headers } from "next/headers";
 const MyBooksPage = async () => {
 
 const session = await auth.api.getSession({
-    headers: await headers() // you need to pass the headers object.
+    headers: await headers() 
 })
+
+  const token = await auth.api.getToken({
+    headers: await headers() 
+  });
+  const tokenValue = token?.token;
+
 const user = session?.user
   if(!user) {
         return (
@@ -26,7 +32,11 @@ const user = session?.user
     }
 const email = user?.email
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/MyBooks/${email}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/MyBooks/${email}`, {
+        headers: {
+            "authorization": `Bearer ${tokenValue}`
+        }
+    });
 
     if (!res.ok) {
         return (

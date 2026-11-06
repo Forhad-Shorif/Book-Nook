@@ -4,9 +4,8 @@ import { authClient } from '@/lib/auth-client';
 import { showToast } from '@/utils/Toast';
 import { Delete02Icon, Message02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import React from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+
 interface UserReview {
     _id: string;
     Name: string;
@@ -20,16 +19,16 @@ const ReviewCards = ({ item }: { item: UserReview }) => {
     const router = useRouter();
     const { data: session, error } = authClient.useSession();
     const user = session?.user
-      
+
     const handleDeleteReview = async () => {
+       
+
         if (!user) {
             return;
         }
         try {
             const apiUrl = process.env.NEXT_PUBLIC_SECRET_URL || "";
-            const response = await fetch(`${apiUrl}/DeleteReview/${item._id}`, {
-                method: "DELETE",
-            });
+            const response = await fetch(`${apiUrl}/DeleteReview/${item._id}`, {  method: "DELETE",});
             if (!response.ok) {
                 return;
             }

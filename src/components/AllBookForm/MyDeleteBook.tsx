@@ -23,7 +23,7 @@ const DeleteBookForm = ({ book }: { book: Book }) => {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); 
+    e.preventDefault();
     setLoading(true);
 
     const bookId = book._id;
@@ -43,10 +43,10 @@ const DeleteBookForm = ({ book }: { book: Book }) => {
         showToast.error("Failed to delete the book. Please try again.");
         return;
       }
-      if(response.ok) {
-         showToast.success("Book deleted successfully!");
-         setOpen(false);
-         router.refresh();
+      if (response.ok) {
+        showToast.success("Book deleted successfully!");
+        setOpen(false);
+        router.refresh();
       }
     } catch (error) {
       showToast.error("Something went wrong!");

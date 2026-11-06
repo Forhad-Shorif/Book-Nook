@@ -23,6 +23,7 @@ const AddBookForm = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+       
         const { data: session } = await authClient.getSession();
         const user = session?.user;
         const addedBy = {
@@ -81,7 +82,7 @@ const AddBookForm = () => {
 
             if (res.ok) {
                 showToast.success("Book added successfully!");
-                (e.target as HTMLFormElement).reset(); 
+                (e.target as HTMLFormElement).reset();
                 router.refresh();
             } else {
                 showToast.error("Failed to add book. Please try again.");

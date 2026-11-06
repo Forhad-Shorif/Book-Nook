@@ -25,6 +25,7 @@ const EditBookForm = ({ book }: { book: Book }) => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoading(true);
+        
 
         const formData = new FormData(event.currentTarget);
         const updatedBookData = Object.fromEntries(formData.entries()) as unknown as {

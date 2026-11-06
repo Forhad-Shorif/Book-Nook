@@ -1,12 +1,15 @@
 import BookCard from '@/components/Books/BookCard';
 import { Book } from '@/Type/type';
 import { showToast } from '@/utils/Toast';
-import React from 'react';
+
 
 // ব্যাকএন্ড থেকে লেটেস্ট 6 টি বই ফেচ করার ফাংশন
 const fetchLatestBooks = async (): Promise<Book[]> => {
+
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/LatestBooks`,{next: { revalidate: 1 }});
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/LatestBooks`,{
+      next: { revalidate: 1 },
+    });
 
     if (!response.ok) {
       return [];

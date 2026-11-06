@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { cn } from "@/lib/utils";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";// অথবা যেখান থেকে authClient ইম্পোর্ট করা হয়েছে
 import { showToast } from "@/utils/Toast";
 
 const navLinks = [
@@ -43,14 +43,11 @@ const navLinks = [
   { label: "My Books", href: "/my-book" },
   { label: "My Borrows", href: "/borrowedbook" },
 ];
-
-// User Avatar Menu
-// IMPORTANT: Client Component must NOT be async
 function UserAvatarMenu() {
   const router = useRouter();
 
-  const { data: session } = authClient.useSession();
-  const user = session?.user || null;
+  const { data: session } =  authClient.useSession();
+const user = session?.user || null;
 
   const handleLogout = async () => {
     try {
@@ -187,8 +184,9 @@ function UserAvatarMenu() {
 }
 
 // Main Navbar
-const Navbar = () => {
-  const { data: session } = authClient.useSession();
+const Navbar =  () => {
+  
+  const { data: session , error } = authClient.useSession();
 
   const user = session?.user || null;
 

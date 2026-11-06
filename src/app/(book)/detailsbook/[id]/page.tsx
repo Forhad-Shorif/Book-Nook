@@ -1,5 +1,7 @@
 import BookDetailsCards from '@/components/Books/BookDetailsCards';
+import { auth } from '@/lib/auth';
 import { Book } from '@/Type/type';
+import { headers } from 'next/headers';
 
 interface BookDetailsPageProps {
     params: Promise<{ id: string }>;
@@ -16,10 +18,17 @@ const BookDetailsPage = async ({ params }: BookDetailsPageProps) => {
             </div>
         );
     }
-
+    const token = await auth.api.getToken({
+        headers: await headers()
+    });
+    const tokenValue = token?.token;
 
     // 2. Fetch book details from backend API
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/books/${id}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/books/${id}`, {
+        headers: {
+            "authorization": `Bearer ${tokenValue}`
+        }
+    });
 
     // 3. Handle response errors gracefully
     if (!res.ok) {

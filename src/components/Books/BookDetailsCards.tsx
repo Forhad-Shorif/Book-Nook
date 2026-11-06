@@ -5,10 +5,10 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
     BookOpen01Icon,
     StarIcon,
-    ArrowLeftIcon, // 👈 ব্যাক আইকনের জন্য এটি যোগ করা হয়েছে
+    ArrowLeftIcon,
 } from "@hugeicons/core-free-icons";
 import BorrowBtn from "./BorrowBtn";
-import { useRouter } from "next/navigation"; // 👈 useRouter ইমপোর্ট করা হয়েছে
+import { useRouter } from "next/navigation";
 
 
 interface BookDetailsCardsProps {
@@ -16,7 +16,7 @@ interface BookDetailsCardsProps {
 }
 
 const BookDetailsCards = ({ bookDetails }: BookDetailsCardsProps) => {
-    const router = useRouter(); // 👈 রাউটার ইনিশিয়ালাইজ করা হয়েছে
+    const router = useRouter(); 
 
     return (
         <div className="min-h-screen bg-[#07101c] text-slate-100 px-4 py-8 sm:px-6 lg:px-12 flex items-center justify-center">

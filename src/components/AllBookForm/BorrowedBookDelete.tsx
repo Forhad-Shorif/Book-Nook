@@ -19,7 +19,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 
 export interface BorrowedBook {
     _id?: string;
-    bookId?: string;
+    Id?: string;
     Title?: string;
     Image?: string;
     Name?: string;
@@ -64,7 +64,7 @@ const BorrowedBookDelete = ({ book }: { book: BorrowedBook }) => {
                 const apiUrl = process.env.NEXT_PUBLIC_SECRET_URL || "";
 
                 // ১. ব্যাকএন্ডে রিভিউ বা রিটার্ন হিস্ট্রি পোস্ট করা
-           await fetch(`${apiUrl}/ReviewPost`, {
+                await fetch(`${apiUrl}/ReviewPost`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -73,23 +73,21 @@ const BorrowedBookDelete = ({ book }: { book: BorrowedBook }) => {
                 });
 
             }
-  
-              // ৫. বইয়ের কপি একটি দেওয়া (PATCH Request)
-            const updateResponse = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/BookCopesIncrease/${book._id}`, {
-                method: "PATCH",
-            });
-           
+
             // ২. ধার করা বইয়ের লিস্ট থেকে ডিলিট করা
             const response = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/BorrowedBooksReturn/${book._id}`, {
                 method: 'DELETE',
             });
             if (response) {
+                const updateResponse = await fetch(`${process.env.NEXT_PUBLIC_SECRET_URL}/BookCopesIncrease/${book.Id}`, {
+                    method: "PATCH",
+                });
                 showToast.success('Borrowed book returned successfully!');
                 router.refresh();
-                 setOpen(false);
+                setOpen(false);
             }
 
-            if(!response){
+            if (!response) {
                 showToast.error('Failed to return the borrowed book. Please try again.');
             }
 
