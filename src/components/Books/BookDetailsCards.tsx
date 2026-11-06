@@ -22,7 +22,7 @@ const BookDetailsCards = ({ bookDetails }: BookDetailsCardsProps) => {
         <div className="min-h-screen bg-[#07101c] text-slate-100 px-4 py-8 sm:px-6 lg:px-12 flex items-center justify-center">
             <div className="mx-auto max-w-5xl w-full">
 
-                {/* 👈 ব্যাক বাটনটি এখানে যোগ করা হলো */}
+                {/* ব্যাক বাটনটি এখানে যোগ করা হলো */}
                 <button
                     onClick={() => router.back()}
                     className="inline-flex items-center gap-2 mb-6 px-4 py-2 text-sm font-medium text-slate-300 bg-slate-900/60 hover:bg-slate-800/80 active:bg-slate-950 rounded-xl transition-all border border-white/10 backdrop-blur-md cursor-pointer group shadow-lg"

@@ -11,7 +11,7 @@ export default function Home() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-tr from-amber-500/10 via-indigo-600/10 to-transparent blur-[140px] pointer-events-none -z-10" />
       <div className="absolute top-[40%] left-1/4 w-[500px] h-[300px] bg-gradient-to-br from-indigo-600/10 to-transparent blur-[120px] pointer-events-none -z-10" />
 
-      {/* ১. হিরো ব্যানার */}
+      {/* hero Banner */}
       <section className="relative z-10">
         <HeroBanner />
       </section>
